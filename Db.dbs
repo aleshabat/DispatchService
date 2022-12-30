@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Sqlite" id="Project-e85" database="Sqlite" >
+	<schema name="Default" >
+		<table name="Estate" spec="" >
+			<column name="Id" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="Name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="Type" type="TEXT" jt="-1" mandatory="y" />
+			<column name="AOGUID" type="VARCHAR" jt="12" />
+			<index name="PK_Estate" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+		</table>
+		<table name="House" spec="" >
+			<column name="Id" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="Number" type="TEXT" jt="-1" mandatory="y" />
+			<column name="EstateId" type="VARCHAR" jt="12" />
+			<column name="StreetId" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="Deleted" type="INTEGER" jt="4" mandatory="y" />
+			<column name="HOUSENUM" type="TEXT" jt="-1" />
+			<column name="BUILDNUM" type="TEXT" jt="-1" />
+			<column name="STRUCNUM" type="TEXT" jt="-1" />
+			<column name="ESTSTATUS" type="INTEGER" jt="4" />
+			<column name="STRSTATUS" type="INTEGER" jt="4" />
+			<column name="AOGUID" type="VARCHAR" jt="12" />
+			<index name="PK_House" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_House" to_schema="Default" to_table="Estate" >
+				<fk_column name="EstateId" pk="Id" />
+			</fk>
+			<fk name="fk_House_0" to_schema="Default" to_table="Street" >
+				<fk_column name="StreetId" pk="Id" />
+			</fk>
+		</table>
+		<table name="Injener" spec="" >
+			<column name="Id" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="Name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="Deleted" type="INTEGER" jt="4" mandatory="y" />
+			<index name="PK_Injener" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+		</table>
+		<table name="InjenerHouse" spec="" >
+			<column name="Id" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="InjenerId" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="HouseId" type="VARCHAR" jt="12" mandatory="y" />
+			<index name="PK_InjenerHouse" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_InjenerHouse" to_schema="Default" to_table="Injener" >
+				<fk_column name="InjenerId" pk="Id" />
+			</fk>
+			<fk name="fk_InjenerHouse_0" to_schema="Default" to_table="House" >
+				<fk_column name="HouseId" pk="Id" />
+			</fk>
+		</table>
+		<table name="Service" spec="" >
+			<column name="Id" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="Name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="Price" type="NUMERIC" jt="2" mandatory="y" />
+			<column name="Deleted" type="INTEGER" jt="4" mandatory="y" />
+			<index name="PK_Service" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+		</table>
+		<table name="Street" spec="" >
+			<column name="Id" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="Name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="Type" type="TEXT" jt="-1" mandatory="y" />
+			<column name="AOGUID" type="VARCHAR" jt="12" />
+			<index name="PK_Street" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+		</table>
+		<table name="Ticket" spec="" >
+			<column name="Id" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="Number" type="INTEGER" jt="4" mandatory="y" />
+			<column name="ServiceId" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="HouseId" type="VARCHAR" jt="12" mandatory="y" />
+			<column name="InjenerId" type="VARCHAR" jt="12" />
+			<column name="Flat" type="TEXT" jt="-1" mandatory="y" />
+			<column name="DateTime" type="DATETIME" jt="93" mandatory="y" />
+			<column name="DateCancel" type="DATETIME" jt="93" />
+			<column name="DateExecute" type="DATETIME" jt="93" />
+			<column name="Phone" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA['']]></defo>
+			</column>
+			<column name="MobilePhone" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA['']]></defo>
+			</column>
+			<column name="Price" type="NUMERIC" jt="2" mandatory="y" />
+			<index name="PK_Ticket" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_Ticket" to_schema="Default" to_table="House" >
+				<fk_column name="HouseId" pk="Id" />
+			</fk>
+			<fk name="fk_Ticket_0" to_schema="Default" to_table="Injener" >
+				<fk_column name="InjenerId" pk="Id" />
+			</fk>
+			<fk name="fk_Ticket_1" to_schema="Default" to_table="Service" >
+				<fk_column name="ServiceId" pk="Id" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="E:/doki2VO/СУБД/test.sqlite" useSystemProxy="false" />
+	<layout name="Main Layout" id="Layout-1c94" show_relation="columns" >
+		<entity schema="Default" name="Estate" color="BED3F4" x="256" y="384" />
+		<entity schema="Default" name="House" color="BED3F4" x="272" y="80" />
+		<entity schema="Default" name="Injener" color="BED3F4" x="256" y="624" />
+		<entity schema="Default" name="InjenerHouse" color="BED3F4" x="384" y="384" />
+		<entity schema="Default" name="Service" color="BED3F4" x="64" y="624" />
+		<entity schema="Default" name="Street" color="BED3F4" x="48" y="112" />
+		<entity schema="Default" name="Ticket" color="BED3F4" x="48" y="288" />
+		<group name="Estate" color="ECF0F7" >
+			<entity schema="Default" name="Service" />
+			<entity schema="Default" name="Street" />
+			<entity schema="Default" name="House" />
+			<entity schema="Default" name="Estate" />
+			<entity schema="Default" name="InjenerHouse" />
+			<entity schema="Default" name="Injener" />
+			<entity schema="Default" name="Ticket" />
+		</group>
+		<query id="Query-c2e" name="HouseId" confirmed="y" >
+			<query_table schema="Default" name="Ticket" alias="t" x="48" y="48" >
+				<column name="Id" />
+				<column name="Number" />
+				<column name="ServiceId" />
+				<column name="HouseId" />
+				<column name="InjenerId" />
+				<column name="Flat" />
+				<column name="DateTime" />
+				<column name="DateCancel" />
+				<column name="DateExecute" />
+				<column name="Phone" />
+				<column name="MobilePhone" />
+				<column name="Price" />
+			</query_table>
+		</query>
+		<query id="Query-105d" name="HouseId_001" confirmed="y" >
+			<query_table schema="Default" name="Ticket" alias="t" x="48" y="48" >
+				<column name="Id" />
+				<column name="Number" />
+				<column name="ServiceId" />
+				<column name="HouseId" />
+				<column name="InjenerId" />
+				<column name="Flat" />
+				<column name="DateTime" />
+				<column name="DateCancel" />
+				<column name="DateExecute" />
+				<column name="Phone" />
+				<column name="MobilePhone" />
+				<column name="Price" />
+			</query_table>
+		</query>
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-24fe" show_column_type="y" show_relation="columns" >
+		<entity schema="Default" name="Estate" color="BED3F4" x="304" y="384" />
+		<entity schema="Default" name="House" color="BED3F4" x="528" y="384" />
+		<entity schema="Default" name="Injener" color="BED3F4" x="304" y="592" />
+		<entity schema="Default" name="InjenerHouse" color="BED3F4" x="528" y="784" />
+		<entity schema="Default" name="Service" color="BED3F4" x="80" y="592" />
+		<entity schema="Default" name="Street" color="BED3F4" x="80" y="384" />
+		<entity schema="Default" name="Ticket" color="BED3F4" x="48" y="48" />
+		<script name="SQL Editor" id="Editor-eeb" language="SQL" >
+			<string><![CDATA[SELECT
+	Id, Name, "Type", AOGUID
+FROM
+	Estate e;]]></string>
+		</script>
+		<browser id="Browse-f7d" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="Default" entity="Estate" x="20" y="20" width="400" height="300" />
+		</browser>
+		<query id="Query-83e" name="Query Builder" >
+			<query_table schema="Default" name="Estate" alias="e" x="48" y="48" >
+				<column name="Id" />
+				<column name="Name" />
+				<column name="Type" />
+				<column name="AOGUID" />
+			</query_table>
+		</query>
+		<form name="Report" id="Report-1614" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Estate Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="Id" />
+						<var name="Name" type="-1" />
+						<var name="Type" type="-1" />
+						<var name="AOGUID" />
+						<script ><![CDATA[SELECT * FROM Estate]]></script>
+					</form_script>
+					<param name="i0" value="Type" />
+					<param name="width" value="100%" />
+					<param name="title" value="Sample Chart" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" css="table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="Id" />
+						<var name="Name" type="-1" />
+						<var name="Type" type="-1" />
+						<var name="AOGUID" />
+						<script ><![CDATA[SELECT * FROM Estate]]></script>
+					</form_script>
+					<cell type="label" name="Id" pos="0,0,0,0,c,c" />
+					<cell type="label" name="Name" pos="1,0,1,0,c,c" />
+					<cell type="label" name="Type" pos="2,0,2,0,c,c" />
+					<cell type="label" name="AOGUID" pos="3,0,3,0,c,c" />
+					<cell type="label" name="Button can open other pages." pos="4,0,4,0,c,c" />
+					<cell type="label" name="${Id}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${Name}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${Type}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${AOGUID}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-default btn-success" pos="4,1,4,1,c,c" ref_id="Report-1614" />
+				</tableview>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="bi-chevron_double_left" ref_id="Report-1614" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="bi-chevron_left" ref_id="Report-1614" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" disabled="${!sampleHasNextPage}" pos="3,3,3,3,l,c" glyph="bi-chevron_right" ref_id="Report-1614" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>

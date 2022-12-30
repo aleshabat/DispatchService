@@ -14,3 +14,4 @@ Web-клиент - ASP.Net MVC
 
 Примечание:
 Тестовая БД (test.sqlite) находится в директории \dispatchservice.web\App_Data
+Структура БД описана в файлах DbShema.png и Db.db.
