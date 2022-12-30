@@ -1,0 +1,74 @@
+﻿@using dispatchservice.api.Domain
+@model List<Street>
+
+<div class="modal fade" id="modalStreetSelector" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content panel-body">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 style="text-align: center" class="modal-title"></h4>
+            </div>
+            <table id="id_tableStreets" class="row-border hover success">
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in @Model)
+                    {
+                        <tr>
+                            <td>
+                                <a id="@item.Id" href="#">@item.FullName</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#id_tableStreets a").click(function () {
+            $('#modalStreetSelector').modal('hide');
+
+            $('#modalStreetSelector').trigger({
+                type: 'SelectItem',
+                value: this.id,
+                text: this.text
+            });
+        });
+
+        $('#id_tableStreets').DataTable({
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ записей",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable:": "В таблице отсутствуют данные",
+                "paginate": {
+                    "first": "Первая",
+                    "previous": "Предыдущая",
+                    "next": "Следующая",
+                    "last": "Последняя"
+                },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                }
+            }
+        });
+
+    });
+
+</script>

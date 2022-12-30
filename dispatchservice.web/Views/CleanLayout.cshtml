@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script src="~/Scripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="~/Scripts/bootstrap.js" type="text/javascript"></script>
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/jsTree/themes/style.min.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/dispatchservice.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js" type="text/javascript"></script>
+    <script src="~/Scripts/validate.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.populate.js" type="text/javascript"></script>
+  <script src="~/Scripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-ui-1.10.4.js" type="text/javascript"></script>
+    <script src="~/Scripts/ui.datepicker-ru.js" type="text/javascript"></script> 
+
+    <!-- DataTables CSS -->
+    <link href="~/Content/DataTables-1.10.5/media/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/DataTables-1.10.5/media/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="~/Content/jsTree/script/jstree.min.js" type="text/javascript"></script> 
+
+</head>
+<body>
+    <div class="navbar navbar">
+        <ul class="nav navbar-nav pull-left">
+            <li class="active"><a href="@Url.Action("Index", "Ticket")" id="constractionsTab">Заявки</a></li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Справочники </a>
+                <ul class="dropdown-menu" id="dictionaryDropdown">
+                    <li><a href="@Url.Action("Index", "Generic", new { GenericControllerVariable = "Estate" })">
+                            Районы</a></li>
+                    <li><a href="@Url.Action("Index", "Generic", new { GenericControllerVariable = "Street" })">
+                            Улицы</a></li>
+                    <li><a href="@Url.Action("Index", "House")">
+                            Дома</a></li>
+                    <li><a href="@Url.Action("Index", "Generic", new { GenericControllerVariable = "Injener" })">
+                            Специалисты</a></li>
+                    <li><a href="@Url.Action("Index", "InjenerHouse")">
+                            Специалисты оказывающие услуги по домам</a></li>
+                    <li><a href="@Url.Action("Index", "Generic", new { GenericControllerVariable = "Service" })">
+                            Услуги</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="container"> 
+        @RenderBody()
+        
+        <div id="divReportParams"></div>
+    </div>
+
+</body>
+</html>
+

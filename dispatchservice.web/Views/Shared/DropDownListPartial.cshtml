@@ -1,0 +1,29 @@
+﻿@using System.Web.Mvc.Html
+@using dispatchservice.web.Models
+@model DropDownListViewModel
+
+@{string id = string.Format("Id_{0}", Model.Name)
+                    .Replace('.', '-')
+                    .Replace('[', '-')
+                    .Replace(']', '-');
+}
+
+<div class="form-group">
+    <label>@Model.Caption</label>
+    @Html.DropDownListFor(m => m.ItemId,
+                            new SelectList(Model.Items, "Value", "Text"),
+                            new
+                            {
+                                style = "width:100%",
+                                id = @id
+                            })
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("select[id=" + "@id" + "]").attr("name", "@Model.Name");
+
+    });
+    
+</script>

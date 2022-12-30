@@ -1,0 +1,69 @@
+﻿@using dispatchservice.web.Models.Ticket;
+@model IndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/CleanLayout.cshtml";
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('form').removeData('validator');
+        $.validator.unobtrusive.parse($('form'));
+        $(".dateControl").datepicker({ dateFormat: "dd.mm.yy" });
+
+        $('#dateStart').change(function () {
+            changeDateRange();
+        });
+        $('#dateEnd').change(function () {
+            changeDateRange();
+        });
+
+        function changeDateRange() {
+            var dateStart = $("#dateStart");
+            var dateEnd = $("#dateEnd");
+
+            $.ajax({
+                url: '@Url.Action("Fill", "Ticket")',
+                data: { 'dateStart': dateStart[0].value, 'dateEnd': dateEnd[0].value },
+                success: function (result) { $('#ticketsDiv').html(result); }
+            });
+
+        };
+
+    });
+</script>
+
+<div class="panel panel-primary panel-footer">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-2">
+                <a type="button" class="btn btn-primary" href="@Url.Action("Add", "Ticket")">Новая заявка</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            @Html.LabelFor(m => m.DateStart, new { @class = "col-sm-1 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(m => m.DateStart, new { @class = "dateControl form-control", id = "dateStart" })
+                <div class="text-danger">@Html.ValidationMessageFor(m => Model.DateStart)</div> 
+            </div>
+
+            @Html.LabelFor(m => m.DateEnd, new { @class = "col-sm-1 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(m => m.DateEnd, new { @class = "dateControl form-control", id = "dateEnd" })
+                <div class="text-danger">@Html.ValidationMessageFor(m => Model.DateEnd)</div> 
+            </div>
+        </div>
+        <br></br>
+        @{
+            Html.RenderAction("Fill", "Ticket", new { dateStart = Model.DateStart, dateEnd = Model.DateEnd });
+        }
+    </div>
+    <div class="panel-footer">
+@*        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfT, page => Url.Action("Index", new { page }))
+*@    </div>
+</div>
+

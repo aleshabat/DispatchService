@@ -1,0 +1,278 @@
+﻿
+@model dispatchservice.web.Models.CustomerDict.CustomerDictViewModel
+@{
+    Layout = "~/Views/CleanLayout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('form').removeData('validator');
+        $.validator.unobtrusive.parse($('form'));
+
+        $("#id_chbxShowAll").click(function () {
+            var deletedRow = $("tr[deleted='true']");
+            //deletedRow.attr("style", "background-color:#dff0d8");
+            //deletedRow.addClass("Danger");
+            deletedRow.toggle();
+
+            $(this).parent().toggleClass("active");
+        });
+    });
+
+    $(document).on("click", ".delete-Dialog", function () {
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        document.getElementById('deleted-Item-Id').innerHTML = id;
+        document.getElementById('ItemName').innerHTML = name;
+
+    });
+
+    $(document).on("click", ".edit-Dialog", function () {
+        var id = $(this).data('id');
+        document.getElementById('edited-Item-Id').innerHTML = id;
+        var url = location.href.replace("Index", "Details");
+   
+        var data = { id: id };
+        $.post(url, // url
+            data, function (result) {
+                $('#editedForm').populate(result);
+                $('#modalEdit').modal('show');
+            }
+        );
+    });
+
+    $(document).on("click", "#btn-delete", function () {
+        var id = document.getElementById('deleted-Item-Id').innerText;
+
+        $.ajax({
+            url: location.href.replace("Index", "Delete"),
+            Type: "POST",    
+            data: {'id': id},
+            success: function () {
+                $('#modalDelete').modal('hide');
+                location.reload();
+            }
+        });
+
+    });
+
+    $(document).on("click", "#btn-cancelDelete", function () {
+        var id = this.attributes['value'].value;
+
+        $.ajax({
+            url: location.href.replace("Index", "CancelDelete"),
+            Type: "POST",    
+            data: {'id': id},
+            success: function () {
+                location.reload();
+            }
+        });
+    });
+
+    $(document).on("click", "#btn-add", function () {
+        var form = $("#addedForm");
+        $.ajax({
+            url: location.href.replace("Index", "Insert"),
+            Type: "POST",
+            data: form.serialize(),
+            success: function () {
+                $('#modalAdd').modal('hide');
+                location.reload();
+            }
+        });
+    });
+
+
+    $(document).on("click", "#btn-edit", function () {
+        var form = $("#editedForm");
+        $.ajax({
+            url: location.href.replace("Index", "Save"),
+            Type: "POST",
+            data: form.serialize(),
+            success: function () {
+                $('#modalEdit').modal('hide');
+                location.reload();
+            }
+        });
+    });
+
+</script>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+        
+    </head>
+    <body>
+        <div class="panel panel-primary panel-footer">
+            <div class="panel-heading">
+                <a data-toggle="modal"  data-target="#modalAdd"  class="add-Dialog btn btn-primary"><span>Добавить</span></a>
+                
+                @if (Model.Items.All(i => i.Deleted != null))
+                {
+                    <div class="btn-group" data-toggle="buttons" >
+                        <label class="btn btn-primary " >
+                            <input type="checkbox" name="my-checkbox" id="id_chbxShowAll" autocomplete="on" checked>Показать все
+                        </label>
+                    </div>
+                }
+                
+            </div>
+            <div class="panel-body">
+                <table id="id_tableDict" class="row-border hover success" @*class="table table-hover"*@>
+                    <thead>
+                        <tr>
+                            <th>
+                            
+                            </th>
+                            <th>
+                            
+                            </th>
+                            <th>
+                            
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in @Model.Items)
+                        {
+                            string deleted = item.Deleted != null && (bool)@item.Deleted ? "deleted=true hidden=true style=background-color:#f2dede" : "";
+                            
+                            <tr @deleted>
+                                <td>
+                                    @item.Name
+                                </td>
+@*   #f2dede                             {
+                                @if (@item.Price != null)
+*@                                    <td>
+                                        @item.Price
+                                    </td>
+@*                                }
+*@                                <td style="text-align: right">
+                                    <div class="btn-group" >
+                                        @if (item.Deleted == null || (bool)!item.Deleted)
+                                        {
+                                            <a data-toggle="modal"  data-id="@item.Id" data-name="@item.Name" class="delete-Dialog" href="#modalDelete" >
+                                                <span>Удалить</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a id="btn-cancelDelete" value="@item.Id" href="#" @*href=@Url.HttpRouteUrl("GenericController", new {
+                                                                                              action = "CancelDelete",
+                                                                                              GenericControllerVariable = Model.Name,
+                                                                                              id = item.Id
+                                                                                           })*@>
+                                                <span>Отменить удаление</span>
+                                            </a>
+                                        }
+                                        | <a data-id="@item.Id" data-name="@item.Name" class="edit-Dialog">
+                                              <span>Редактировать</span>
+                                          </a>
+                                   
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                @*@Html.PagedListPager((IPagedList)ViewBag.OnePageOfT, page => Url.Action("Index", @Model.Name, new { page }))
+            *@</div>
+        </div>
+    </body>
+</html>
+<!-- modalAdd -->
+<div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Добавление</h4>
+            </div>
+            <div class="modal-body">
+                   <form role="form" id="addedForm" class="form-horizontal" >
+                @Html.Partial(@Model.Name, @Model.Model)
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button id="btn-add" type="button" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modalEdit -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Редактирование</h4>
+            </div>
+                @Html.Hidden("edited-Item-Id", null)
+            
+                <form role="form" id="editedForm" class="form-horizontal">
+                    @Html.Partial(@Model.Name, Model.Model);
+               </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button id="btn-edit" type="button" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+     
+    </div>
+</div>
+<!-- modalDelete -->
+<div class="modal fade" id="modalDelete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Удаление</h4>
+            </div>
+            @Html.Hidden("deleted-Item-Id", null)
+            <div class="modal-body">
+                <p> Вы действительно хотите удалить <div id="ItemName" /> ?&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button id="btn-delete" type="button" class="btn btn-primary">Удалить</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    $(document).ready(function () {
+        $('#id_tableDict').DataTable({
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ записей",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable:": "В таблице отсутствуют данные",
+                "paginate": {
+                    "first": "Первая",
+                    "previous": "Предыдущая",
+                    "next": "Следующая",
+                    "last": "Последняя"
+                },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                }
+            }
+        });
+    });
+
+</script>

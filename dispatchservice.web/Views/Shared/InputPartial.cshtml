@@ -1,0 +1,27 @@
+﻿@using dispatchservice.web.Models
+@model InputViewModel
+
+@{
+    string inputType = "";
+    switch (Model.Type)
+     {
+         case InputViewModel.InputType.DatePicker:
+             inputType = "dateControl form-control";
+             break;
+         case InputViewModel.InputType.TextBox:
+             inputType = "form-control";
+             break;
+     }
+     
+    <div class="form-group">
+        <label>@Model.Caption</label>
+        <input class='@inputType' id=@string.Format("Id_{0}", @Model.Name) name=@Model.Name type="text" value=@Model.Value>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+
+        $(".dateControl").datepicker({ dateFormat: "dd.mm.yy" });
+    });
+</script>

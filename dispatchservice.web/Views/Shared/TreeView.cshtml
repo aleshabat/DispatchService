@@ -1,0 +1,201 @@
+﻿@using dispatchservice.web.Helpers
+@using dispatchservice.web.Models
+@model TreeViewModel
+
+<div id="Id_Tree" >
+    @(Html.TreeView(Model.Tree)
+            .EmptyContent("Нет элементов...")
+            .Children(m => m.Childs)
+            //.HtmlAttributes(new { @class = "jstree-icon jstree-checkbox"/*@class = "treeview", id = "tree"*/ })
+            //.ChildrenHtmlAttributes(new {  /*@class = "treeview" */})
+            .ItemText(m => m.Name)
+            .ItemTemplate(
+                @<text>
+                    <a id="@item.Id" level="@item.Level" deleted=@item.Deleted.ToString() style="background: red">
+                                @item.Name
+                    </a>
+                    </text>)
+            .ItemTemplateSelected(
+                    @<text>
+                    <a class="jstree-clicked" id="@item.Id" level="@item.Level">
+                                @item.Name
+                    </a>
+                    </text>)
+    )
+
+
+</div>
+            
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.jstree.defaults.core.themes.icons = false;
+        //$("#Id_Tree").jstree("close_all");
+
+        //$("#tree").jstree({ 'theme': ["apple"] });
+
+        /*$(function () {
+    						$('#tree').jstree({
+    						    // Подключаем плагины
+    						    "plugins": [
+    						        "themes", "json_data"
+    						    ],
+    						    "json_data": {
+    						        "ajax": {
+    						            "url": "http://www.jstree.com/static/3.0.9/assets/ajax_nodes.html", // получаем наш JSON
+										    'data' : function (node) {
+											    return { 'id' : node.id };
+										    }
+    						        }
+    						    },
+    						});
+    					});*/
+
+        //$.jstree.defaults.core.data = true;
+
+        //$("#tree").jstree("close_all");
+/*
+        $("#tree").bind("select_node.jstree", function (e, data) {
+            $("#tree").jstree('open_node', data.node);
+        });
+        */
+
+
+        /*$(function() {
+            $('#tree').jstree({
+                'core': {
+                    'data': {
+                        'url': 'http://www.jstree.com/static/3.0.9/assets/ajax_nodes.html',
+                        'data': function (node) {
+                            return { 'id': node.id };
+                        }
+                    }
+            }});
+        });
+        */
+        // AJAX
+        /*
+$('#tree').jstree({
+    'core' : {
+        'data' : {
+            'url' : '/get/children/',
+            'data' : function (node) {
+                return { 'id' : node.id };
+            }
+        }
+    }});
+
+// direct data
+$('#tree').jstree({
+    'core' : {
+        'data' : [
+            'Simple root node',
+            {
+                'id' : 'node_2',
+                'text' : 'Root node with options',
+                'state' : { 'opened' : true, 'selected' : true },
+                'children' : [ { 'text' : 'Child 1' }, 'Child 2']
+            }
+        ]
+    }});
+
+// function
+$('#tree').jstree({
+    'core' : {
+        'data' : function (obj, callback) {
+            callback.call(this, ['Root 1', 'Root 2']);
+        }
+    }});
+    */
+
+        /*  $('#tree').jstree({
+'core' : {
+  'data' : {
+    'url' : 'ajax_nodes.html',
+    'data' : function (node) {
+      'url' : 'ajax_nodes.html',
+      'data' : function (node) {
+        return { 'id' : node.id };
+      }
+    }
+  }
+}});*/
+
+//$("#tree").Tree();
+    });
+</script>
+@*
+@if(Model.CheckBoxStyle)
+{
+    <script type="text/javascript">
+            $('#Id_Tree').jstree({ 'plugins': ['checkbox'/*, 'contextmenu'*/] });
+    </script>
+}
+else
+{
+      <script type="text/javascript">
+          $('#Id_Tree').jstree({
+              'core': {
+                  "multiple": false,
+                  //'data': data,
+                  "check_callback": true
+              },
+              'plugins': ['contextmenu', "sort", 'state'],
+              contextmenu: { items: context_menu }
+          });
+
+          //$("#Id_Tree").jstree("open_all");
+
+          /*$('#Id_Tree').on('create_node.jstree', function (e, data) {
+              //update_item('new', data.node.parent, 0, data.node.text);
+             // alert();
+          });*/
+
+          function context_menu(node) {
+              var tree = $('#Id_Tree').jstree(true);
+
+              // The default set of all items
+              var items = {
+                  "Create": {
+                      "separator_before": false,
+                      "separator_after": false,
+                      "label": "Создать",
+                      "action": function (obj) {
+                          var $node = tree.create_node(node);
+                          tree.edit($node);
+                          //alert();
+                      }
+                  },
+                  /*"Rename": {
+                      "separator_before": false,
+                      "separator_after": false,
+                      "label": "Rename",
+                      "action": function (obj) {
+                          tree.edit(node);
+                      }
+                  },*/
+                  "Edit": {
+                      "separator_before": false,
+                      "separator_after": false,
+                      "label": "Редактировать",
+                      "action": function (obj) {
+                          tree.edit(node);
+                      }
+                  },
+                  "Remove": {
+                      "separator_before": true,
+                      "separator_after": false,
+                      "label": "Удалить",
+                      "action": function (obj) {
+                          if (confirm('Удалить: ' + node.text + '?')) {
+                              tree.delete_node(node);
+                          }
+                      }
+                  }
+              };
+
+
+              return items;
+          };
+      </script>
+}*@

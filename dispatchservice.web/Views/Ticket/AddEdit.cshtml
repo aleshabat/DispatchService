@@ -1,0 +1,224 @@
+﻿@using dispatchservice.web.Models.Ticket;
+@model TicketAddEditViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/CleanLayout.cshtml";
+}
+
+<div class="panel panel-primary panel-footer">
+    <div class="panel-heading"></div>
+    <div class="panel-body">
+        @using (Html.BeginForm("Save", "Ticket", FormMethod.Post, new { id = "addEditTicket-form" }))
+        {
+            @Html.HiddenFor(m => m.TicketId, new { id = "Id_ticketId" })
+            @Html.DropDownListFor(m => Model.ServiceIdPrices, new SelectList(Model.ServiceIdPrices, "Value", "Text"), new { hidden = "true" })
+
+            <div class="form-group">
+                @Html.LabelFor(m => Model.Services)
+                @Html.DropDownListFor(m => Model.ServiceId, new SelectList(Model.Services, "Value", "Text"), new { style = "width:100%" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => Model.Estates)
+                @Html.DropDownListFor(m => Model.EstateId, new SelectList(Model.Estates, "Value", "Text"), new { style = "width:100%", id = "EstateId" })
+            </div>
+            <div id="divStreets">
+                @{Html.RenderAction("FillDropDownList", "Street", new { estateId = Model.EstateId, currentStreetId = Model.StreetId });}
+            </div>
+            <div id="divHouses">
+                @{Html.RenderAction("FillDropDownList", "House", new { streetId = Model.StreetId, estateId = Model.EstateId, currentHouseId = Model.HouseId });}
+            </div>
+            
+            <div class="form-group" id="divFlatId" >
+                @Html.LabelFor(m => m.Flat)
+                @Html.TextBoxFor(m => m.Flat, new { @class = "form-control", id = "Id_FlatId" })
+                <div class="text-danger">@Html.ValidationMessageFor(m => Model.Flat)</div> 
+            </div>
+            
+            <div class="row">
+                @Html.LabelFor(m => m.DateTime, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.DateTime, new { @class = "dateControl form-control", id = "Id_DateTime" })
+                    <div class="text-danger">@Html.ValidationMessageFor(m => Model.DateTime)</div> 
+                </div>
+            
+                @Html.LabelFor(m => m.DateExecute, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-2" id="divDateExecute">
+                    @Html.TextBoxFor(m => m.DateExecute, new { @class = "dateControl form-control", id = "Id_DateExecute" })
+                    @* @{Html.RenderAction("FillDateExecute", "Ticket", new { houseId = Model.HouseId, serviceId = Model.ServiceId });}
+*@                    <div class="text-danger">@Html.ValidationMessageFor(m => Model.DateExecute)</div> 
+                </div>
+                
+
+                @Html.LabelFor(m => m.DateCancel, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.DateCancel, new { @class = "dateControl form-control", id = "Id_DateCancel" })
+                    <div class="text-danger">@Html.ValidationMessageFor(m => Model.DateCancel)</div> 
+                </div>
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(m => Model.Phone)
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", id = "Id_Phone" })
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(m => Model.MobilePhone)
+                @Html.TextBoxFor(m => m.MobilePhone, new { @class = "form-control", id = "Id_MobilePhone" })
+            </div>
+            
+            <div id="divInjeners">
+                @{ Html.RenderAction("Fill", "Injener", new { serviceId = Model.ServiceId, houseId = Model.HouseId, dateExecute = Model.DateExecute, currentInjenerId = Model.InjenerId }); }
+            </div>
+          
+           @Html.LabelFor(m => Model.Price)
+           @Html.TextBoxFor(m => m.Price, new { @class = "form-control", id = "Id_Price" })
+           <div class="text-danger">@Html.ValidationMessageFor(m => Model.Price)</div> 
+            
+            <br/>
+           <button type="submit" class="btn btn-primary" data-loading-text="Сохранение..."  id="Id_btnSave">Сохранить</button>
+        }
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('form').removeData('validator');
+        $.validator.unobtrusive.parse($('form'));
+
+        Initialize();
+        DisabledDateExecuteDateCancel();
+
+    });
+
+    $(document).ajaxComplete(function () {
+        Initialize();
+
+    });
+
+    function Initialize() {
+        $(".dateControl").datepicker({ dateFormat: "dd.mm.yy" });
+
+        if (!checkEvent($("#EstateId"), 'change')) {
+            $("#EstateId").change(function () {
+                FillHouse('@Guid.Empty');
+
+                $.ajax({
+                    url: '@Url.Action("FillDropDownList", "Street")',
+                    data: { 'estateId': this.value, currentStreetId: '@Guid.Empty' },
+                    success: function (result) { $('#divStreets').html(result); }
+                });
+            });
+        };
+
+        if (!checkEvent($("#Id_StreetId"), 'change')) {
+            $("#Id_StreetId").change(function () {
+                var estateId = $("#EstateId")[0].value;
+                FillHouse(this.value, estateId);
+            });
+        };
+
+        if (!checkEvent($("#Id_HouseId"), 'change')) {
+            $("#Id_HouseId").change(function () {
+                FillDateExecute(this.value, $("#ServiceId")[0].value);
+                FillIjener(this.value, $("#ServiceId")[0].value, $("#Id_DateExecute")[0].value);
+            });
+        };
+
+        if (!checkEvent($("#Id_DateCancel"), 'change')) {
+            $('#Id_DateCancel').change(function () {
+                DisabledDateExecuteDateCancel();
+            });
+        };
+
+        if (!checkEvent($("#Id_DateExecute"), 'change')) {
+            $("#Id_DateExecute").change(function () {
+                var houseId = $("#Id_HouseId");
+                if (houseId.length > 0) {
+                    FillIjener($("#Id_HouseId")[0].value, $("#ServiceId")[0].value, this.value);
+                }
+                DisabledDateExecuteDateCancel();
+            });
+        };
+
+        if (!checkEvent($("#ServiceId"), 'change')) {
+            $("#ServiceId").change(function () {
+                var houseId = $("#Id_HouseId");
+                if (houseId.length > 0) {
+                    FillDateExecute(houseId[0].value, this.value);
+                    FillIjener(houseId[0].value, this.value, $("#Id_DateExecute")[0].value);
+                }
+
+                $("#Id_Price")[0].value = $("#ServiceIdPrices option[value=" + this.value + "]").text();
+
+            });
+        };
+
+    };
+
+    function FillHouse(streetId, estateId) {
+        $.ajax({
+            url: '@Url.Action("FillDropDownList", "House")',
+            data: { 'streetId': streetId, 'estateId': estateId, 'currentHouseId': '@Guid.Empty' },
+            success: function (result) { $('#divHouses').html(result); }
+        });
+    };
+
+    function FillDateExecute(houseId, serviceId) {
+        if (houseId != null && // houseId != '@Guid.Empty' &&
+             serviceId != null && serviceId != '@Guid.Empty' &&
+             document.getElementById('Id_DateExecute').disabled == false) {
+            $.ajax({
+                url: '@Url.Action("FillDateExecute", "Ticket")',
+                data: { 'houseId': houseId, 'serviceId': serviceId },
+                success: function (result) { $('#divDateExecute').html(result); }
+            });
+        }
+    };
+
+    function FillIjener(houseId, serviceId, dateExecute) {
+        if (houseId != null && dateExecute != null && serviceId != null && houseId != '@Guid.Empty' && serviceId != '@Guid.Empty') {
+            $.ajax({
+                url: '@Url.Action("Fill", "Injener")',
+                data: { 'houseId': houseId, 'serviceId': serviceId, 'dateExecute': dateExecute, currentInjenerId: '@Guid.Empty' },
+                success: function (result) { $('#divInjeners').html(result); }
+            });
+        }
+    };
+
+    function DisabledDateExecuteDateCancel() {
+        document.getElementById('Id_DateExecute').disabled = $("#Id_DateCancel")[0].value != "";
+        document.getElementById('Id_DateCancel').disabled = $("#Id_DateExecute")[0].value != "";
+    };
+
+    function checkEvent(element, eventname) {
+        var events, ret = false;
+
+        events = eventsList(element);
+        if (events) {
+            $.each(events, function (evName, e) {
+                if (evName == eventname) {
+                    ret = true;
+                }
+            });
+        }
+        return ret;
+    };
+
+    function eventsList(element) {
+        // В разных версиях jQuery список событий получается по-разному
+        var events = element.data('events');
+        if (events !== undefined) return events;
+
+        /*events = $.data(element, 'events');
+        if (events !== undefined) return events;
+
+        events = $._data(element, 'events');
+        if (events !== undefined) return events;
+
+        events = $._data(element[0], 'events');
+        if (events !== undefined) return events;*/
+
+        return false;
+    };
+</script>

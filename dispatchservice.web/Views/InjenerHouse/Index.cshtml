@@ -1,0 +1,89 @@
+﻿@using dispatchservice.web.Models.InjenerHouse;
+@model InjenerHouseViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/CleanLayout.cshtml";
+}
+
+<div class="panel panel-primary panel-footer">
+    <div class="panel-heading"></div>
+    <div class="panel-body">
+    
+        <div id="divInjeners">
+            @{Html.RenderAction("FillAll", "Injener", new { withDeleted = false});}
+        </div>
+        
+        <div id="divEstates">
+            @{Html.RenderAction("FillAll", "Estate");}
+        </div>
+
+        <div id="Id_divTreeEstate"></div>
+
+        <br></br>            
+        <button class="btn btn-primary" id="Id_btnSave">Сохранить</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var injenerId = $('#Id_InjenerId')[0].value;
+        var estateId = $('#Id_EstateId')[0].value;
+        FillTreeEstate(injenerId, estateId);
+
+        $("#Id_EstateId").change(function () {
+            var injenerId = $('#Id_InjenerId')[0].value;
+            FillTreeEstate(injenerId, this.value);
+        });
+
+        $("#Id_btnSave").click(function () {
+            this.textContent = 'Сохранение...';
+            this.disabled = true;
+
+            var ids = [];
+            var selectedNodes = $.jstree.reference($('.jstree-container-ul')).get_selected(true);
+            for (var i = 0; i < selectedNodes.length; i++) {
+                if (selectedNodes[i].a_attr.level == 3)//выбираем галочки только на домах
+                    ids[i] = selectedNodes[i].a_attr.id;
+            }
+
+            var estateId = $('#Id_EstateId')[0].value;
+            var injenerId = $('#Id_InjenerId')[0].value;
+            postToUrl('/InjenerHouse/Save', { 'injenerId': injenerId, 'estateId': estateId, 'selectedHouses': ids }, 'POST');
+        });
+
+    });
+
+    function FillTreeEstate(injenerId, estateId) {
+        $.ajax({
+            url: '@Url.Action("GetTreeEstateByInjener", "InjenerHouse")',
+            data: { 'estateId': estateId, 'injenerId': injenerId },
+            success: function(result) {
+                $('#Id_divTreeEstate').html(result);
+                $('#Id_Tree').jstree({ 'plugins': ['checkbox'/*, 'contextmenu'*/] });
+            }
+        });
+
+    };
+
+    function postToUrl(path, params, method) {
+        method = method || "post"; // Устанавливаем метод отправки.
+
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        for (var key in params) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+</script>

@@ -1,0 +1,217 @@
+﻿@model Guid?
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/CleanLayout.cshtml";
+}
+
+<div class="panel panel-primary panel-footer">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-2">
+                <a type="button" id="Id_btnAddStreet" class="btn btn-primary" href="#">Добавить улицу</a>
+            </div>
+        </div>
+    </div>
+    <div class="jstree-closed panel-body">
+    
+        <div id="divEstates">
+            @{Html.RenderAction("FillAll", "Estate", new { currentEstateId = Model });}
+        </div>
+
+        <div id="Id_divTreeEstate"></div>
+
+        <br></br>            
+        <button class="btn btn-primary" id="Id_btnSave">Сохранить</button>
+    </div>
+</div>
+
+<div id="divStreets"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        FillTreeEstate($("#Id_EstateId")[0].value);
+
+        $(document).on("click", "#Id_btnAddStreet", function () {
+            $.ajax({
+                url: '@Url.Action("FillSelector", "Street")',
+                success: function (result) {
+                    $('#divStreets').html(result);
+                    $('#modalStreetSelector').modal('show');
+                }
+            });
+        });
+
+        $("#Id_EstateId").change(function () {
+            FillTreeEstate(this.value);
+        });
+
+        $("#Id_btnSave").click(function () {
+
+            var tree = $("#Id_Tree").jstree(true).get_json('#', { 'flat': true });
+            postToUrl('/House/Save', { 'estateId': $("#Id_EstateId")[0].value, 'jsonTree': JSON.stringify(tree).replace('\\n', "") }, 'POST');
+        });
+
+    });
+
+    $(document).ajaxComplete(function () {
+        $('#modalStreetSelector').on('SelectItem', function (e) {
+            //alert('Вы выбрали ' + e.text + " " + e.value);
+            var tree = $('#Id_Tree').jstree(true);
+            var newNode = tree.create_node(null, { 'text': e.text, 'id': e.value, 'type': 'valid_child' });
+            //newNode = newNode.replace('_anchor', '');
+        });
+
+    });
+
+    function FillTreeEstate(estateId) {
+        $.ajax({
+            url: '@Url.Action("GetTreeEstate", "House")',
+            data: { 'estateId': estateId },
+            success: function(result) {
+                $('#Id_divTreeEstate').html(result);
+                InitializeTree();
+            }
+        });
+    };
+
+    function InitializeTree() {
+        $('#Id_Tree').jstree({
+            'core': {
+                "multiple": false,
+                //'data': data,
+                "check_callback": true
+            },
+            'plugins': ['contextmenu', "sort", 'state'],
+            contextmenu: { items: context_menu }
+        });
+
+        //$("#Id_Tree").jstree("open_all");
+
+        /*$('#Id_Tree').on('create_node.jstree', function (e, data) {
+        //update_item('new', data.node.parent, 0, data.node.text);
+        // alert();
+        });*/
+
+        function context_menu(node) {
+            if ($("#"+node.id)[0].attributes["aria-level"].value == 1){
+                return context_menuStreet(node);
+            }
+            if ($("#" + node.id)[0].attributes["aria-level"].value == 2){
+                if (node.a_attr.deleted == "True") {
+                    return context_menuHouseDeleted(node);
+                }
+
+                return context_menuHouse(node);
+            }
+
+
+        return null;
+    };
+
+        function context_menuStreet(node) {
+            var tree = $('#Id_Tree').jstree(true);
+
+            var items = {
+                "Create": {
+                    "separator_before": false,
+                    "separator_after": false,
+                    "label": "Создать",
+                    "action": function (obj) {
+                        var $node = tree.create_node(node);
+                        tree.edit($node);
+                        //$("#" + node.id).attr("state", "new");
+                    }
+                },
+                "Remove": {
+                    "separator_before": true,
+                    "separator_after": false,
+                    "label": "Удалить",
+                    "action": function (obj) {
+                        if (confirm('Удалить: ' + node.text + '?')) {
+                            tree.delete_node(node);
+                            //$("#" + node.id).hide(); //attr("hidden", "true");
+                            //$("#" + node.id).attr("state", "delete");
+
+                        }
+                    }
+                }
+            };
+            return items;
+        };
+
+        function context_menuHouse(node) {
+            var tree = $('#Id_Tree').jstree(true);
+
+            var items = {
+                "Edit": {
+                    "separator_before": false,
+                    "separator_after": false,
+                    "label": "Редактировать",
+                    "action": function (obj) {
+                        tree.edit(node);
+                    }
+                },
+                "Remove": {
+                    "separator_before": true,
+                    "separator_after": false,
+                    "label": "Удалить",
+                    "action": function (obj) {
+                        if (confirm('Удалить: ' + node.text.replace('\\n', '').trim() + '?')) {
+                            tree.delete_node(node);
+                            //$("#" + node.id).attr("hidden", true);
+                            //$("#" + node.id).attr("state", "delete");
+                            //alert(jQuery('#Id_Tree').jstree("get_xml","flat", "#tutorial_table_of_contents"));
+
+                        }
+                    }
+                }
+            };
+            return items;
+        };
+
+        function context_menuHouseDeleted(node) {
+            var tree = $('#Id_Tree').jstree(true);
+
+            var items = {
+                "Remove": {
+                    "separator_before": true,
+                    "separator_after": false,
+                    "label": "Отменить удаление",
+                    "action": function (obj) {
+                        if (confirm('Отменить удаление: ' + node.text.replace('\\n', '').trim() + '?')) {
+                            $("#" + node.id + " a").attr("deleted", "False");
+
+                            //tree.delete_node(node);
+                            //$("#" + node.id).attr("hidden", true);
+                            //$("#" + node.id).attr("state", "delete");
+                            //alert(jQuery('#Id_Tree').jstree("get_xml","flat", "#tutorial_table_of_contents"));
+
+                        }
+                    }
+                }
+            };
+            return items;
+        };
+
+    };
+
+    function postToUrl(path, params, method) {
+        method = method || "post"; // Устанавливаем метод отправки.
+
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        for (var key in params) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
