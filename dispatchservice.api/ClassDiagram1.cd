@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="dispatchservice.api.Database.SqLiteDatabase" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAACAAAAAAAAA=</HashCode>
+      <FileName>Database\SqLiteDatabase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Dict" Collapsed="true">
+    <Position X="8.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Dict.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Entity&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAAAAAAAAAAIAAAEAAAAAAAAA=</HashCode>
+      <FileName>Domain\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Entity" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Domain\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Estate">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Domain\Estate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.House" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAWAEAEAAEEAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Domain\House.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Injener" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Injener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.InjenerHouse" Collapsed="true">
+    <Position X="14.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAgAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Domain\InjenerHouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Service" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Service.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Street">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Domain\Street.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Domain.Ticket" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAACAAAQAAAAAAAEAAEAAAEAAgYEQEAAIAIAAAABA=</HashCode>
+      <FileName>Domain\Ticket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Repositories.HouseRpository" Collapsed="true">
+    <Position X="5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAIAAQAAAAAI=</HashCode>
+      <FileName>Repositories\HouseRpository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="dispatchservice.api.Repositories.InjenerHouseRepository" Collapsed="true">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAEAAAAAAIAAQAAAAAI=</HashCode>
+      <FileName>Repositories\InjenerHouseRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="dispatchservice.api.Repositories.StreetRepository" Collapsed="true">
+    <Position X="7.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAI=</HashCode>
+      <FileName>Repositories\StreetRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="dispatchservice.api.Repositories.Repository&lt;T&gt;" Collapsed="true">
+    <Position X="3.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAABAAAAAFAAAAAAAQAAAEAAAAAAIAAQAAABAA=</HashCode>
+      <FileName>Repositories\Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="dispatchservice.api.Repositories.TicketRepository" Collapsed="true">
+    <Position X="2.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAQAAAAAI=</HashCode>
+      <FileName>Repositories\TicketRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="dispatchservice.api.Services.DictService&lt;T&gt;" Collapsed="true">
+    <Position X="16.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEABAAAEAAAAAAAAEAAEAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Services\DictService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Services.StreetService" Collapsed="true">
+    <Position X="16.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAEEAAAAAAAAAAAAAAABAAAAAAACIAA=</HashCode>
+      <FileName>Services\StreetService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="dispatchservice.api.Services.TicketService" Collapsed="true">
+    <Position X="18.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAABAAAAAAAAABAAAAgAAAAAA=</HashCode>
+      <FileName>Services\TicketService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="dispatchservice.api.Database.IDatabase" Collapsed="true">
+    <Position X="16.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAACAAAAAAAAA=</HashCode>
+      <FileName>Database\IDatabase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="dispatchservice.api.Repositories.IHouseRepository" Collapsed="true">
+    <Position X="9.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Repositories\IHouseRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="dispatchservice.api.Repositories.IInjenerHouseRepository" Collapsed="true">
+    <Position X="15.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Repositories\IInjenerHouseRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="dispatchservice.api.Repositories.IRepository&lt;T&gt;" Collapsed="true">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAABAAAAAFAAAAAAAQAAAEAAAAAAIAAQAAABAA=</HashCode>
+      <FileName>Repositories\IRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="dispatchservice.api.Repositories.IStreetRepository" Collapsed="true">
+    <Position X="11.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Repositories\IStreetRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="dispatchservice.api.Repositories.ITicketRepository" Collapsed="true">
+    <Position X="13.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Repositories\ITicketRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="8.83" />
+</ClassDiagram>

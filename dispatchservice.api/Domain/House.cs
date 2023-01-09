@@ -43,13 +43,6 @@ namespace dispatchservice.api.Domain
 
         public bool Deleted { get; set; }
 
-        public Guid? AOGUID { get; set; }
-        public string HOUSENUM { get; set; }
-        public string BUILDNUM { get; set; }
-        public string STRUCNUM { get; set; }
-        public Int16? ESTSTATUS { get; set; }
-        public Int16? STRSTATUS { get; set; }
-
         [NotMaped]
         public string FullAddress
         {

@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -157,8 +158,6 @@
     <EmbeddedResource Include="Sql\Tickets\GetByHouse.sql" />
     <EmbeddedResource Include="Sql\InjenerHouses\GetByHouse.sql" />
     <EmbeddedResource Include="Sql\InjenerHouses\DeleteByInjener.sql" />
-    <EmbeddedResource Include="Sql\Reports\Report02.sql" />
-    <EmbeddedResource Include="Sql\Reports\Report03.sql" />
     <Content Include="x86\SQLite.Interop.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,29 +16,19 @@ namespace dispatchservice.migrations
             Create.Table("Estate")
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
                 .WithColumn("Name").AsString(100).NotNullable()
-                .WithColumn("Type").AsString(50).NotNullable()
-                .WithColumn("AOGUID").AsString(25).Nullable();
-
+                .WithColumn("Type").AsString(50).NotNullable();
 
             Create.Table("Street")
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
                 .WithColumn("Name").AsString(100).NotNullable()
-                .WithColumn("Type").AsString(50).NotNullable()
-                .WithColumn("AOGUID").AsString(25).Nullable();
-
+                .WithColumn("Type").AsString(50).NotNullable();
 
             Create.Table("House")
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
                 .WithColumn("Number").AsString(25).NotNullable()
                 .WithColumn("EstateId").AsGuid().Nullable().ForeignKey("Estate", "Id")
                 .WithColumn("StreetId").AsGuid().NotNullable().ForeignKey("Street", "Id")
-                .WithColumn("Deleted").AsBoolean().NotNullable()
-                .WithColumn("AOGUID").AsString(25).Nullable()
-                .WithColumn("HOUSENUM").AsString(25).Nullable()
-                .WithColumn("BUILDNUM").AsString(25).Nullable()
-                .WithColumn("STRUCNUM").AsString(25).Nullable()
-                .WithColumn("ESTSTATUS").AsInt16().Nullable()
-                .WithColumn("STRSTATUS").AsInt16().Nullable();
+                .WithColumn("Deleted").AsBoolean().NotNullable();
 
             Create.Table("Injener")
                 .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()

@@ -7,7 +7,6 @@ namespace dispatchservice.api.Domain
     public class Estate : Dict
     {
         public string Type { get; set; }
-        public Guid? AOGUID { get; set; }
 
         [NotMaped]
         public string FullName

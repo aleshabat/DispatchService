@@ -8,8 +8,6 @@ namespace dispatchservice.api.Domain
     {
         public string Type { get; set; }
 
-        public Guid? AOGUID { get; set; }
-
         [NotMaped]
         public string FullName
         {

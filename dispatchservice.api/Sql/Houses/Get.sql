@@ -1,4 +1,4 @@
-﻿select h.Id, h.Number, h.Deleted, h.AOGUID, h.HOUSENUM, h.BUILDNUM, h.STRUCNUM, h.ESTSTATUS, h.STRSTATUS,
+﻿select h.Id, h.Number, h.Deleted,
 		s.Id, s.Name, s.Type,
 		e.Id, e.Name, e.Type
 from House h
